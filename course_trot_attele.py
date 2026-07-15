@@ -45,7 +45,7 @@ speed_changes = [
     ]
 
 
-def calculate_new_speed (dice_nbr, horse):
+def calculate_new_speed(dice_nbr, horse):
     actual_speed = horse["vitesse"]
     change = speed_changes[actual_speed][dice_nbr - 1]
     if change == "DQ":
@@ -67,11 +67,21 @@ def calculate_distance(actual_speed):
 
 def is_end_game(horses):
     for horse in horses:
-        if not(horse["disqualified"]) and horse["distance"] < 2400:
+        if not (horse["disqualified"]) and horse["distance"] < 2400:
             return False
 
     print("Course terminée")
     return True
+
+
+def display_winner(horses, race_type):
+    sorted_horses = sorted(
+        [horse for horse in horses if not horse["disqualified"]],
+        key=lambda horse: horse["distance"],
+        reverse=True
+    )  # permet de trier liste en fonction de la distance
+    return sorted_horses[:race_type]
+    # race_type ne contenant que 3, 4, 5, permet de retourner podium en fonction du type de course
 
 
 if __name__ == "__main__":
@@ -95,12 +105,17 @@ if __name__ == "__main__":
             print(
                 f"Cheval {horse['numéro']} : "
                 f"vitesse = {horse['vitesse']}, "
-                f"distance parcourue = {horse['distance']}m "
+                f"distance parcourue = {horse['distance']}m, "
                 f"statut = {horse['disqualified']}"
             )
 
-    print(f"La course est terminée en {round} tours.")
+    print(f"La course s'est terminée en {round} tours.")
+
     print(horses)
-
-
-
+    podium = display_winner(horses, race_type)
+    print(f"Les {race_type} premiers sont :")
+    for place, horse in enumerate(podium, start=1): # enumerate permet d'obtenir l'indice, mais en commençant à 1
+        print(
+            f"En position {place} : Cheval {horse["numéro"]} "
+            f"avec une ditance de {horse['distance']}"
+        )
