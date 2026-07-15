@@ -23,7 +23,9 @@ def create_horses(horse_nbr):
             "numéro": n + 1,
             "vitesse": 0,
             "distance": 0,
-            "disqualified": False
+            "disqualified": False,
+            "finished": False,
+            "arrival_round": None
         }
         horses.append(horse)
     return horses
@@ -67,7 +69,7 @@ def calculate_distance(actual_speed):
 
 def is_end_game(horses):
     for horse in horses:
-        if not (horse["disqualified"]) and horse["distance"] < 2400:
+        if not (horse["disqualified"]) and not horse["finished"] :
             return False
 
     print("Course terminée")
@@ -77,9 +79,10 @@ def is_end_game(horses):
 def display_winner(horses, race_type):
     sorted_horses = sorted(
         [horse for horse in horses if not horse["disqualified"]],
-        key=lambda horse: horse["distance"],
-        reverse=True
-    )  # permet de trier liste en fonction de la distance
+        key=lambda horse: (horse["arrival_round"], -horse["distance"]),
+    )
+    # permet de trier liste en fonction du tour d'arrivée et
+    # de la distance mis en négatif pour avoir ordre inverse (décroissant)
     return sorted_horses[:race_type]
     # race_type ne contenant que 3, 4, 5, permet de retourner podium en fonction du type de course
 
@@ -96,26 +99,33 @@ if __name__ == "__main__":
         print(f"Tour : {round}, Temps écoulé = {passed_time} secondes")
 
         for horse in horses:
-            if horse["disqualified"]:
+            if horse["disqualified"] or horse["finished"]:
                 continue
             dice_nbr = roll_dice()
             new_speed = calculate_new_speed(dice_nbr, horse)
             distance_traveled = calculate_distance(new_speed)
             horse["distance"] += distance_traveled
+            if horse["distance"] > 2400:
+                horse["finished"] = True
+                horse["arrival_round"] = round
             print(
                 f"Cheval {horse['numéro']} : "
                 f"vitesse = {horse['vitesse']}, "
                 f"distance parcourue = {horse['distance']}m, "
-                f"statut = {horse['disqualified']}"
+                f"disqualifié = {horse['disqualified']}, "
+                f"arrivé = {horse['finished']}"
             )
 
     print(f"La course s'est terminée en {round} tours.")
 
     print(horses)
     podium = display_winner(horses, race_type)
+
     print(f"Les {race_type} premiers sont :")
     for place, horse in enumerate(podium, start=1): # enumerate permet d'obtenir l'indice, mais en commençant à 1
+        arrival_time = horse["arrival_round"] * 10
         print(
             f"En position {place} : Cheval {horse["numéro"]} "
-            f"avec une ditance de {horse['distance']}"
+            f"avec une distance de {horse['distance']} "
+            f"au tour {horse['arrival_round']} en {arrival_time} secondes. "
         )
