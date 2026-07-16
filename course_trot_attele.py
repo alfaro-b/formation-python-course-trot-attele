@@ -102,7 +102,8 @@ def is_end_game(horses_list):
         if not (racehorse["disqualified"]) and not racehorse["finished"]:
             return False
 
-    print("Course terminée")
+    print(f"{'-' * 50}")
+    print("Course terminée\n")
     return True
 
 
@@ -145,6 +146,7 @@ if __name__ == "__main__":
         turn += 1
         passed_time = turn * 10
         convert_time = calculate_time(passed_time)
+        print(f"{'-' * 50}")
         print(f"Tour : {turn}, Temps écoulé = {convert_time[0]} minutes {convert_time[1]} secondes")
 
         for horse in horses:
