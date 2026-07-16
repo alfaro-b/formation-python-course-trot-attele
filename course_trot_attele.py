@@ -149,9 +149,13 @@ if __name__ == "__main__":
 
         for horse in horses:
             if horse["disqualified"] or horse["finished"]:
+                # si un cheval est déjà disqualifié ou arrivé, on continue
                 continue
             dice_nbr = roll_dice()
             new_speed = calculate_new_speed(dice_nbr, horse)
+            if horse["disqualified"]:
+                # si un cheval passe au statut disqualifié après calcul nouvelle vitesse, on continue
+                continue
             distance_traveled = calculate_distance(new_speed)
             horse["distance"] += distance_traveled
             if horse["distance"] >= 2400:
@@ -170,7 +174,8 @@ if __name__ == "__main__":
     podium = display_winner(horses, race_type)
 
     print(f"Les {race_type} premiers sont :")
-    for place, horse in enumerate(podium, start=1):  # enumerate permet d'obtenir l'indice, mais en commençant à 1
+    for place, horse in enumerate(podium, start=1):
+        # enumerate permet d'obtenir l'indice, mais en commençant à 1
         arrival_time = horse["arrival_round"] * 10
         arrival_time_converted = calculate_time(arrival_time)
         print(
