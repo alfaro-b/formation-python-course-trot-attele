@@ -124,6 +124,17 @@ def display_winner(horses_list, race_category):
     # race_type ne contenant que 3, 4, 5, permet de retourner podium en fonction du type de course
 
 
+def calculate_time(time):
+    """
+    Convertit secondes en minutes et secondes
+    :param time: Temps en secondes
+    :return: Retourne les minutes et les secondes
+    """
+    minutes = time // 60
+    seconds = time % 60
+    return minutes, seconds
+
+
 if __name__ == "__main__":
     horse_nbr, race_type = ask_user()
     horses = create_horses(horse_nbr)
@@ -133,7 +144,8 @@ if __name__ == "__main__":
     while not is_end_game(horses):
         turn += 1
         passed_time = turn * 10
-        print(f"Tour : {turn}, Temps écoulé = {passed_time} secondes")
+        convert_time = calculate_time(passed_time)
+        print(f"Tour : {turn}, Temps écoulé = {convert_time[0]} minutes {convert_time[1]} secondes")
 
         for horse in horses:
             if horse["disqualified"] or horse["finished"]:
@@ -155,14 +167,15 @@ if __name__ == "__main__":
 
     print(f"La course s'est terminée en {turn} tours.")
 
-    print(horses)
     podium = display_winner(horses, race_type)
 
     print(f"Les {race_type} premiers sont :")
     for place, horse in enumerate(podium, start=1):  # enumerate permet d'obtenir l'indice, mais en commençant à 1
         arrival_time = horse["arrival_round"] * 10
+        arrival_time_converted = calculate_time(arrival_time)
         print(
             f"En position {place} : Cheval {horse["numéro"]} "
-            f"avec une distance de {horse['distance']} "
-            f"au tour {horse['arrival_round']} en {arrival_time} secondes. "
+            f"en {horse['arrival_round']} tours "
+            f"en {arrival_time_converted[0]} minutes et {arrival_time_converted[1]} secondes "
+            f"avec une distance de {horse['distance']}. "
         )
