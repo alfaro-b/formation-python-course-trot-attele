@@ -2,6 +2,11 @@ import random
 
 
 def ask_user():
+    """
+    Demande à l'utilisateur de choisir le nombre de chevaux et le type de course
+    :return: Nombre de chevaux entre 12 et 20 et
+    type de course 3 pour tiercé, 4 pour quarté ou 5 pour quinté
+    """
     horse_number = int(input("Combien de chevaux participent à la course? (Entre 12 et 20 chevaux) "))
 
     while horse_number < 12 or horse_number > 20:
@@ -17,6 +22,11 @@ def ask_user():
 
 
 def create_horses(horse_number):
+    """
+    Créé une liste de chevaux en fonction du nombre de chevaux participant à la course
+    :param horse_number: Nombre de chevaux participant à la course
+    :return: Liste de chevaux, un dictionnaire pour chaque cheval avec ses informations
+    """
     horses_list = []
     for n in range(horse_number):
         racehorse = {
@@ -32,6 +42,10 @@ def create_horses(horse_number):
 
 
 def roll_dice():
+    """
+    simule un lancer de dé
+    :return: Chiffre entre 1 et 6
+    """
     die_nbr = random.randint(1, 6)
     return die_nbr
 
@@ -48,6 +62,12 @@ speed_changes = [
 
 
 def calculate_new_speed(die_nbr, racehorse):
+    """
+    Calcule la nouvelle vitesse du cheval en fonction du chiffre obtenu au lancé de dé
+    :param die_nbr: Chiffre entre 1 et 6
+    :param racehorse: Dictionnaire du cheval
+    :return: Vitesse du cheval
+    """
     actual_speed = racehorse["vitesse"]
     change = speed_changes[actual_speed][die_nbr - 1]
     if change == "DQ":
@@ -63,11 +83,21 @@ distance = [0, 23, 46, 69, 92, 115, 138]  # Distance parcourue en fonction de la
 
 
 def calculate_distance(actual_speed):
+    """
+    Calcule la distance parcourue en fonction de la vitesse du cheval
+    :param actual_speed: Vitesse du cheval
+    :return: Distance parcourue
+    """
     distance_covered = distance[actual_speed]
     return distance_covered
 
 
 def is_end_game(horses_list):
+    """
+    Vérifie si la course est terminée, c'est-à-dire si tous les chevaux sont arrivés ou disqualifiés
+    :param horses_list: Liste des chevaux
+    :return: False si course pas terminée et True si course terminée
+    """
     for racehorse in horses_list:
         if not (racehorse["disqualified"]) and not racehorse["finished"]:
             return False
@@ -77,6 +107,13 @@ def is_end_game(horses_list):
 
 
 def display_winner(horses_list, race_category):
+    """
+    Trie la liste des chevaux en fonction du tour d'arrivée et de la distance parcourue
+    :param horses_list: Liste des chevaux
+    :param race_category: Type de course
+    :return: Retourne la liste des chevaux triée,
+    uniquement les 3, 4 ou 5 premiers en fonction du type de course
+    """
     sorted_horses = sorted(
         [racehorse for racehorse in horses_list if not racehorse["disqualified"]],
         key=lambda racehorse: (racehorse["arrival_round"], -racehorse["distance"]),
