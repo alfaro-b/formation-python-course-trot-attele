@@ -154,7 +154,7 @@ if __name__ == "__main__":
             new_speed = calculate_new_speed(dice_nbr, horse)
             distance_traveled = calculate_distance(new_speed)
             horse["distance"] += distance_traveled
-            if horse["distance"] > 2400:
+            if horse["distance"] >= 2400:
                 horse["finished"] = True
                 horse["arrival_round"] = turn
             print(
