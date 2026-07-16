@@ -2,24 +2,24 @@ import random
 
 
 def ask_user():
-    horse_nbr = int(input("Combien de chevaux participent à la course? (Entre 12 et 20 chevaux) "))
+    horse_number = int(input("Combien de chevaux participent à la course? (Entre 12 et 20 chevaux) "))
 
-    while horse_nbr < 12 or horse_nbr > 20:
+    while horse_number < 12 or horse_number > 20:
         print("Une course comporte entre 12 et 20 chevaux.")
-        horse_nbr = int(input("Combien de chevaux participent à la course?"))
+        horse_number = int(input("Combien de chevaux participent à la course?"))
 
-    race_type = int(input("Choisissez un type de course? 3(Tiercé), 4(Quarté), 5(Quinté) "))
-    while race_type not in (3, 4, 5):
+    race_category = int(input("Choisissez un type de course? 3(Tiercé), 4(Quarté), 5(Quinté) "))
+    while race_category not in (3, 4, 5):
         print("Choisissez 3,4 ou 5 pour le type de course.")
-        race_type = int(input("Choisissez un type de course? 3(Tiercé), 4(Quarté), 5(Quinté) "))
+        race_category = int(input("Choisissez un type de course? 3(Tiercé), 4(Quarté), 5(Quinté) "))
 
-    return horse_nbr, race_type
+    return horse_number, race_category
 
 
-def create_horses(horse_nbr):
-    horses = []
-    for n in range(horse_nbr):
-        horse = {
+def create_horses(horse_number):
+    horses_list = []
+    for n in range(horse_number):
+        racehorse = {
             "numéro": n + 1,
             "vitesse": 0,
             "distance": 0,
@@ -27,13 +27,13 @@ def create_horses(horse_nbr):
             "finished": False,
             "arrival_round": None
         }
-        horses.append(horse)
-    return horses
+        horses_list.append(racehorse)
+    return horses_list
 
 
 def roll_dice():
-    dice_nbr = random.randint(1, 6)
-    return dice_nbr
+    die_nbr = random.randint(1, 6)
+    return die_nbr
 
 
 speed_changes = [
@@ -47,15 +47,15 @@ speed_changes = [
     ]
 
 
-def calculate_new_speed(dice_nbr, horse):
-    actual_speed = horse["vitesse"]
-    change = speed_changes[actual_speed][dice_nbr - 1]
+def calculate_new_speed(die_nbr, racehorse):
+    actual_speed = racehorse["vitesse"]
+    change = speed_changes[actual_speed][die_nbr - 1]
     if change == "DQ":
-        horse["disqualified"] = True
+        racehorse["disqualified"] = True
         return actual_speed
 
     actual_speed += change
-    horse["vitesse"] = actual_speed
+    racehorse["vitesse"] = actual_speed
     return actual_speed
 
 
@@ -63,27 +63,27 @@ distance = [0, 23, 46, 69, 92, 115, 138]  # Distance parcourue en fonction de la
 
 
 def calculate_distance(actual_speed):
-    distance_traveled = distance[actual_speed]
-    return distance_traveled
+    distance_covered = distance[actual_speed]
+    return distance_covered
 
 
-def is_end_game(horses):
-    for horse in horses:
-        if not (horse["disqualified"]) and not horse["finished"] :
+def is_end_game(horses_list):
+    for racehorse in horses_list:
+        if not (racehorse["disqualified"]) and not racehorse["finished"]:
             return False
 
     print("Course terminée")
     return True
 
 
-def display_winner(horses, race_type):
+def display_winner(horses_list, race_category):
     sorted_horses = sorted(
-        [horse for horse in horses if not horse["disqualified"]],
-        key=lambda horse: (horse["arrival_round"], -horse["distance"]),
+        [racehorse for racehorse in horses_list if not racehorse["disqualified"]],
+        key=lambda racehorse: (racehorse["arrival_round"], -racehorse["distance"]),
     )
     # permet de trier liste en fonction du tour d'arrivée et
     # de la distance mis en négatif pour avoir ordre inverse (décroissant)
-    return sorted_horses[:race_type]
+    return sorted_horses[:race_category]
     # race_type ne contenant que 3, 4, 5, permet de retourner podium en fonction du type de course
 
 
@@ -91,12 +91,12 @@ if __name__ == "__main__":
     horse_nbr, race_type = ask_user()
     horses = create_horses(horse_nbr)
 
-    round = 0
+    turn = 0
 
     while not is_end_game(horses):
-        round += 1
-        passed_time = round * 10
-        print(f"Tour : {round}, Temps écoulé = {passed_time} secondes")
+        turn += 1
+        passed_time = turn * 10
+        print(f"Tour : {turn}, Temps écoulé = {passed_time} secondes")
 
         for horse in horses:
             if horse["disqualified"] or horse["finished"]:
@@ -107,7 +107,7 @@ if __name__ == "__main__":
             horse["distance"] += distance_traveled
             if horse["distance"] > 2400:
                 horse["finished"] = True
-                horse["arrival_round"] = round
+                horse["arrival_round"] = turn
             print(
                 f"Cheval {horse['numéro']} : "
                 f"vitesse = {horse['vitesse']}, "
@@ -116,13 +116,13 @@ if __name__ == "__main__":
                 f"arrivé = {horse['finished']}"
             )
 
-    print(f"La course s'est terminée en {round} tours.")
+    print(f"La course s'est terminée en {turn} tours.")
 
     print(horses)
     podium = display_winner(horses, race_type)
 
     print(f"Les {race_type} premiers sont :")
-    for place, horse in enumerate(podium, start=1): # enumerate permet d'obtenir l'indice, mais en commençant à 1
+    for place, horse in enumerate(podium, start=1):  # enumerate permet d'obtenir l'indice, mais en commençant à 1
         arrival_time = horse["arrival_round"] * 10
         print(
             f"En position {place} : Cheval {horse["numéro"]} "
