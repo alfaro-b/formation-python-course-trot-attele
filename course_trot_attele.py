@@ -23,7 +23,7 @@ def ask_user():
 
 def create_horses(horse_number):
     """
-    Créé une liste de chevaux en fonction du nombre de chevaux participant à la course
+    Crée une liste de chevaux en fonction du nombre de chevaux participant à la course
     :param horse_number: Nombre de chevaux participant à la course
     :return: Liste de chevaux, un dictionnaire pour chaque cheval avec ses informations
     """
@@ -63,7 +63,7 @@ speed_changes = [
 
 def calculate_new_speed(die_nbr, racehorse):
     """
-    Calcule la nouvelle vitesse du cheval en fonction du chiffre obtenu au lancé de dé
+    Calcule la nouvelle vitesse du cheval en fonction du chiffre obtenu au lancer de dé
     :param die_nbr: Chiffre entre 1 et 6
     :param racehorse: Dictionnaire du cheval
     :return: Vitesse du cheval
@@ -174,7 +174,7 @@ if __name__ == "__main__":
         arrival_time = horse["arrival_round"] * 10
         arrival_time_converted = calculate_time(arrival_time)
         print(
-            f"En position {place} : Cheval {horse["numéro"]} "
+            f"En position {place} : Cheval {horse['numéro']} "
             f"en {horse['arrival_round']} tours "
             f"en {arrival_time_converted[0]} minutes et {arrival_time_converted[1]} secondes "
             f"avec une distance de {horse['distance']}. "
