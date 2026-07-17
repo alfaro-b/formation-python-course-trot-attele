@@ -51,13 +51,13 @@ def roll_dice():
 
 
 speed_changes = [
-    [0, 1, 1, 1, 2, 2],  # vitesse à 0
-    [0, 0, 1, 1, 1, 2],  # vitesse à 1
-    [0, 0, 1, 1, 1, 2],  # vitesse à 2
-    [-1, 0, 0, 1, 1, 1],  # vitesse à 3
-    [-1, 0, 0, 1, 1, 1],  # vitesse à 4
-    [-2, -1, 0, 0, 0, 1],  # vitesse à 5
-    [-2, -1, 0, 0, 0, "DQ"]  # vitesse à 6
+    [0, 1, 1, 1, 2, 2],  # vitesse actuelle à 0
+    [0, 0, 1, 1, 1, 2],  # vitesse actuelle à 1
+    [0, 0, 1, 1, 1, 2],  # vitesse actuelle à 2
+    [-1, 0, 0, 1, 1, 1],  # vitesse actuelle à 3
+    [-1, 0, 0, 1, 1, 1],  # vitesse actuelle à 4
+    [-2, -1, 0, 0, 0, 1],  # vitesse actuelle à 5
+    [-2, -1, 0, 0, 0, "DQ"]  # vitesse actuelle à 6
     ]
 
 
